@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "react": "^18.2.0"
-    // Add other dependencies here if you know them
   },
   "scripts": {
     "start": "react-scripts start",
