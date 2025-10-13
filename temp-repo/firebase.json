@@ -1,0 +1,11 @@
+# Create the minimal firebase.json file
+echo '{
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}' > firebase.json
