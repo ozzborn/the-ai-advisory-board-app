@@ -18,4 +18,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}
           channelId: live
           projectId: theaiadvisoryboard
-          entryPoint: temp-repo/temp-repo 
+          entryPoint: temp-repo
