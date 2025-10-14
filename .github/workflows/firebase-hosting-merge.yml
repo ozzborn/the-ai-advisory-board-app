@@ -22,10 +22,9 @@ jobs:
 
       # STEP 1: Install and Build (Runs inside the submodule)
       - name: Clean Install and Build
-        # FIX: Use the standard execution path for the main Node script file.
-        run: rm -rf ./node_modules && npm install && node ./node_modules/react-scripts/scripts/build.js
+        # FIX: Try the direct path to the main build script file.
+        run: rm -rf ./node_modules && npm install && node ./node_modules/react-scripts/build.js
         working-directory: temp-repo
-
       # STEP 2: Deploy (Deploys from the submodule directory)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
