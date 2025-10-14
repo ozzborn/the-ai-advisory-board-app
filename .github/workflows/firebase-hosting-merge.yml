@@ -1,3 +1,1 @@
-- name: Clean Install and Build
-        run: rm -rf node_modules && npm ci --ignore-scripts && npm run build
-        working-directory: temp-repo
+name: Deploy to Firebase Hosting on merge
