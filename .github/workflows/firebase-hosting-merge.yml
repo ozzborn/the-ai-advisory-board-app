@@ -21,7 +21,6 @@ jobs:
         working-directory: temp-repo
 
       # STEP 2: Deploy (Deploys from the submodule directory)
-      # STEP 2: Deploy (Deploys from the submodule directory)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.REPO_TOKEN }}
