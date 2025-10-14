@@ -22,8 +22,7 @@ jobs:
 
       # STEP 1: Install and Build (Runs inside the submodule)
       - name: Clean Install and Build
-        # FIX: Add chmod +x to grant execute permission to react-scripts before running the build
-        run: npm ci && chmod +x ./node_modules/.bin/react-scripts && npm run build
+        run: rm -rf ./node_modules && npm install && chmod +x ./node_modules/.bin/react-scripts && npm run build
         working-directory: temp-repo
 
       # STEP 2: Deploy (Deploys from the submodule directory)
