@@ -1,30 +1,6 @@
-name: Deploy to Firebase Hosting on merge
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 0
-          token: ${{ secrets.REPO_TOKEN }} # FIX: Explicitly provides auth for submodule checkout
-
-      # STEP 1: Install and Build (Runs inside the submodule)
-      - name: Clean Install and Build
-        run: npm ci && npm run build
+# STEP 1: Install and Build (Runs inside the submodule)
+- name: Clean Install and Build
+        # Use 'npm install' instead of 'npm ci' for better compatibility, 
+        # and ensure the build script is separate and clean.
+        run: rm -rf ./node_modules && npm install && npm run build
         working-directory: temp-repo
-
-      # STEP 2: Deploy (Deploys from the submodule directory)
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.REPO_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}
-          channelId: live
-          projectId: theaiadvisoryboard # <--- FINAL FIX: Add the Project ID
-          entryPoint: temp-repo
