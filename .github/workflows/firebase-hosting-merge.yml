@@ -1,6 +1,6 @@
 # STEP 1: Install and Build (Runs inside the submodule)
-- name: Clean Install and Build
+      - name: Clean Install and Build
         # Use 'npm install' instead of 'npm ci' for better compatibility, 
         # and ensure the build script is separate and clean.
-        run: rm -rf ./node_modules && npm install && npm run build
+        run: rm -rf ./node_modules && npm install && mkdir -p build && npm run build
         working-directory: temp-repo
