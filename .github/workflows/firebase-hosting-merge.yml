@@ -21,9 +21,11 @@ jobs:
         working-directory: temp-repo
 
       # STEP 2: Deploy (Deploys from the submodule directory)
+      # STEP 2: Deploy (Deploys from the submodule directory)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.REPO_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}
           channelId: live
-          entryPoint: temp-repo # FIX: Correct deployment path
+          projectId: theaiadvisoryboard # <--- FINAL FIX: Add the Project ID
+          entryPoint: temp-repo
