@@ -22,7 +22,8 @@ jobs:
 
       # STEP 1: Install and Build (Runs inside the submodule)
       - name: Clean Install and Build
-        run: rm -rf ./node_modules && npm install && ./node_modules/.bin/react-scripts build
+        # FIX: Call the Node.js script directly with the 'node' interpreter. This bypasses both shell permissions and pathing issues.
+        run: rm -rf ./node_modules && npm install && node ./node_modules/react-scripts/bin/react-scripts.js build
         working-directory: temp-repo
 
       # STEP 2: Deploy (Deploys from the submodule directory)
