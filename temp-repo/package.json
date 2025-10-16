@@ -1,4 +1,4 @@
 "scripts": {
-  "build": "react-scripts build",
+  "build": "node node_modules/react-scripts/scripts/build.js",
   // ... other scripts
 }
