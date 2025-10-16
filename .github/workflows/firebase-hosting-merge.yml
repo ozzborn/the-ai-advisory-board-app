@@ -32,9 +32,14 @@ jobs:
         working-directory: temp-repo
 
       # STEP 2: Deploy (Uses the correct source path)
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      # .github/workflows/firebase-hosting-merge.yml
+
+# ... (rest of the file) ...
+
+      # STEP 2: Deploy to Firebase Hosting
+      - uses: FirebaseExtended/action-hosting-deploy@v1  # <-- CHANGE TO @v1
         with:
           repoToken: '${{ secrets.REPO_TOKEN }}'
-          # ... (other options) ...
-          entryPoint: ./
-          source: temp-repo/build
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_AI_ADVISORY_BOARD_APP }}'  # <-- ADD THIS LINE
+          projectId: the-ai-advisory-board-app
+          # Remove or rename the 'source' input if it's there
