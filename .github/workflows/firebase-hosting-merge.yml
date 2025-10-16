@@ -40,6 +40,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.REPO_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_AI_ADVISORY_BOARD_APP }}'  # <-- ADD THIS LINE
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}'
           projectId: the-ai-advisory-board-app
           # Remove or rename the 'source' input if it's there
