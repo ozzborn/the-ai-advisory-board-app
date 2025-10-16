@@ -23,8 +23,13 @@ jobs:
           
       # STEP 1: Install and Build (Still runs inside the submodule path)
       - name: Clean Install and Build
-        run: rm -rf ./node_modules && npm install && npm run build
-        working-directory: temp-repo # Keep the working-directory here!
+        run: |
+          rm -rf ./node_modules
+          npm install
+          # FIX: Set the path for React to look in the current working directory (.) 
+          # which is defined below as temp-repo
+          REACT_APP_BUILD_PATH=. npm run build
+        working-directory: temp-repo
 
       # STEP 2: Deploy (Uses the correct source path)
       - uses: FirebaseExtended/action-hosting-deploy@v0
