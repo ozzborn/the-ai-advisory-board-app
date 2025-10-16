@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+# .github/workflows/firebase-hosting-merge.yml
+# ... (rest of the file) ...
 
 jobs:
   build_and_deploy:
@@ -17,24 +19,17 @@ jobs:
           submodules: true
           fetch-depth: 0
           token: ${{ secrets.REPO_TOKEN }}
-          # The checkout action should run in the main repo root, not the submodule.
-          # The working-directory here is implicitly the main repo root after checkout.
-
-      # STEP 1: Install and Build (Runs inside the submodule)
+          # REMOVE: working-directory: temp-repo 
+          
+      # STEP 1: Install and Build (Still runs inside the submodule path)
       - name: Clean Install and Build
-        # FIX: rm -rf ./node_modules & npm install is run inside temp-repo
-        # FIX: npm run build executes the corrected script from temp-repo/package.json
         run: rm -rf ./node_modules && npm install && npm run build
-        working-directory: temp-repo
+        working-directory: temp-repo # Keep the working-directory here!
 
-      # STEP 2: Deploy (Deploys from the main repository root)
+      # STEP 2: Deploy (Uses the correct source path)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.REPO_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}'
-          channelId: live
-          projectId: theaiadvisoryboard
-          # FIX: entryPoint is ./ to find firebase.json in the main repo root
+          # ... (other options) ...
           entryPoint: ./
-          # FIX: source is temp-repo/build to find the build output inside the submodule
           source: temp-repo/build
