@@ -37,7 +37,7 @@ jobs:
 # ... (rest of the file) ...
 
       # STEP 2: Deploy to Firebase Hosting
-      - uses: FirebaseExtended/action-hosting-deploy@v1  # <-- CHANGE TO @v1
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.REPO_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_AI_ADVISORY_BOARD_APP }}'  # <-- ADD THIS LINE
