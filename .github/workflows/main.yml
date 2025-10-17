@@ -1,0 +1,15 @@
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # ... (steps for checkout, npm install, npm run build)
+
+      - name: Deploy to Firebase preview channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          # This must match your GitHub Secret name
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}' 
+          # 🛑 CRITICAL FIX: Use the unhyphenated, correct Project ID
+          projectId: 'theaiadvisoryboard' 
+          channelId: 'preview'
+          expires: 7d
