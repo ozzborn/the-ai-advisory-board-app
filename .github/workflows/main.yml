@@ -7,9 +7,22 @@ jobs:
       - name: Deploy to Firebase preview channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # This must match your GitHub Secret name
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD }}' 
-          # 🛑 CRITICAL FIX: Use the unhyphenated, correct Project ID
-          projectId: 'theaiadvisoryboard' 
+          repoToken: '${{ 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 }}'
+            # Use the simplified secret name
+          firebaseServiceAccount: '${{ {
+  "type": "service_account",
+  "project_id": "theboardai-a8d90",
+  "private_key_id": "fb6d62c49db066651665a1cb9d7315a3da831cda",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCpcAf/DlE1kS0c\n6oGGEOHM+wGwT4tOefE4nUM0AuSgdTcyqLHStYSv75J3r4fggD2PrZpLqyeGPecK\nENYsMuOxVbUxEg5EnEgayGu1li5w1gfs8Rycvx8Kcz2IOXa7QICMmQsTiPOBz/bg\n/iybCq6P78rzv5abZytWM6/0PQM2C4XskKj4+i6CJEVPLbvY3xtOl3UfZfCcomRI\nR11VLj8E6bQNbf9S1nX74JC3UhBdpdd1jBaOCa+I57l7knwPkTFoI+HhXJ0dFOan\nf0aR4Du7/Q2Fw5N/oiAMUQNPBX0ax/MNQ/4+r0weRDbOKzCWLCKnV6dVc6VijrXy\nrpLVAcGxAgMBAAECggEASeKCeiQiIXu28l8IMA/4hswFxn5JPuVJ3Ogmv+1rCNVU\nRpDtSfbBb37Gnc47MBh7v8Vx/QEbcRxZPThuTEO8qj23jzhSZHTJtHQlE7/zbFzI\ng/f4BBoLTSFHebmlHq5X3/d0rwYPOVIYU7BCfzE/QaDNHVE0OXvZl/NeDOD2H4Bc\n1uFU645n9OeSqUtL2YjzcIrL091SUO/8WIRc22hPvHsRFG4EcUk523VeN669R37u\nBNpVn8PDuac5Lkj9RO0bfVXpPrq+ItaFNscIYxN3STnNe3HONwDCtbPE25N9IS/4\npH+2+v6XiKaYFg4mmnsY9HR4MTZ4aWw5q7VHlgVQyQKBgQDeN8EQzdEfqc0kbfKT\nrrCvKpFPF/RGoQnZ91PQIkz66WHCW9wySQMsG5wjHhH87GNn945cEkU2CeEN6Rei\ntlUkcDwaAwID1zCUOpOZ3qfMj4TN0KtMwwYXgYwOKAV7yaceh1k4czX9xwe4l+aL\ns6RaQQTaHzbcVGFHSX1nNJWJxwKBgQDDMi9I78Z4pP9l9Kb7eaGPHfdh7xFvqg7Y\nY50GAfDzOmkrJ4SSOg7QE+hlq5+YRMXDZOfd5vtIqahIKU/onRi3gXNynnvg8LbC\n7PH9DURYV7oQwbIx1u/mcao43MDmKxU9eFn/w6YAXBchvghVVS1CSRJsjvydMsGI\nddrEuV8YxwKBgGXpW/nA6m+DCDn00pM4Qn+THiEP80+Q+1ujOiTyFivcbKEeT9Yf\n9fx8jRbt64H7R3ue5QMEvgkSbsxaYiSVSmbzshyb1Ii+X+EbHCYtHveJunZJhMYn\nitus5fZ4FEu5J5OwrxJchB5m8PuPboQTVwStXPRL7HUPna173q8+RnZxAoGAINiN\nBGT0rNB2+Z0VjDOHcCHGwwALmxKutNLuVVh2RzeJAu3/bOvAGlt/O7yJeoH4FU0h\nh0Ga/zstShdJjwcAZcCuwJbSmaNn3Z0piz90RLleYft2FNTqQYjW8AKVoyWUyWc7\nHcK6aE0Wx2LG3DUdDI5nP0VAVON5lZDfY0MeMXkCgYEAnAeEhKwUSIhXqYHRBReg\nW+xvfpXNkLFFTbRmfJ9oT4SbSonkGTrDHXZ0YqJBEt/Vkxk5LP83bNLvl2nw0qVC\nRIQwFzCaB7Yilr0DQ28NU8tq9g6yQr9swVrL/6ITJ76yO9tljN1nvh+vamFSpwFc\nFRC4D4Pnq95gM/C2nAQiV4Y=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@theboardai-a8d90.iam.gserviceaccount.com",
+  "client_id": "101520356191801570057",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40theboardai-a8d90.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+} }}' 
+          # Use the corrected, unhyphenated, definitive Project ID
+          projectId: 'theaiadvisoryboard'
           channelId: 'preview'
           expires: 7d
