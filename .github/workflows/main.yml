@@ -45,5 +45,5 @@ jobs:
           projectId: 'theaiadvisoryboard'
           
           # Deploying to the live site to bypass the Punycode preview channel URL issue
-          # channelId: 'preview' # Commented out
-          # expires: 7d          # Commented out
+          channelId: 'preview' 
+          expires: 7d          
