@@ -16,6 +16,8 @@
     "build": "node node_modules/react-scripts/scripts/build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+    "build": "react-scripts build", // Example for Reacct
+    "build": "vue-cli-service build" // Example for Vue
   },
   "eslintConfig": {
     "extends": [
