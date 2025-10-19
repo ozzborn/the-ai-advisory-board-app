@@ -12,7 +12,9 @@ jobs:
     steps:
       # 1. FIX: Checkout uses the default token and works reliably
       - name: Checkout Repository
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} 
         # Note: No 'with: token' is needed here, as the default GITHUB_TOKEN is used.
 
       # 2. Build Steps (Replace or expand these with your project's build logic)
