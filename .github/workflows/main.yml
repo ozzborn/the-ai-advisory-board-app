@@ -1,17 +1,46 @@
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      # ... (steps for checkout, npm install, npm run build)
+name: Deploy to Firebase Hosting
 
+on:
+  push:
+    branches:
+      - main # Trigger on push to the main branch
+
+jobs:
+  build_and_deploy: # Changed from 'deploy' for clarity
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. FIX: Checkout uses the default token and works reliably
+      - name: Checkout Repository
+        uses: actions/checkout@v4 
+        # Note: No 'with: token' is needed here, as the default GITHUB_TOKEN is used.
+
+      # 2. Build Steps (Replace or expand these with your project's build logic)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a modern, stable Node version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        # Assuming your build command is 'npm run build' which outputs to 'public'
+        run: npm run build 
+
+      # 3. FIX: Deployment uses the correct project ID and secrets
       - name: Deploy to Firebase preview channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # Use the default token provided by GitHub Actions
+          # Use the default GitHub Token for repo-specific actions (required by the deploy action)
           repoToken: '${{ secrets.GITHUB_TOKEN }}' 
-          # Reference the new, simple secret name
+          
+          # Use the JSON key stored as a secret (must be the key for 'theaiadvisoryboard')
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' 
-          # Target the correct, unhyphenated project ID
+          
+          # CRITICAL FIX: The correct unhyphenated project ID
           projectId: 'theaiadvisoryboard'
+          
+          # Additional deployment configuration
           channelId: 'preview'
           expires: 7d
