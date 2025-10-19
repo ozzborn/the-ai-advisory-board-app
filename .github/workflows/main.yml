@@ -14,36 +14,36 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Fixes the "terminal prompts disabled" error
+          # This line fixes the "terminal prompts disabled" authentication error
+          token: ${{ secrets.GITHUB_TOKEN }} 
 
-      # 2. Build Steps 
+      # 2. Build Steps (Standard React Application)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install Dependencies
-        # This will now succeed because the package.json syntax has been corrected
+        # This succeeds now that package.json syntax is clean
         run: npm install 
 
       - name: Build Project
-        # This command creates the final static files in the 'build' directory (correct for React)
+        # This command creates the final static files in the 'build' directory (required by firebase.json)
         run: npm run build 
 
       # 3. Deployment Step 
-      - name: Deploy to Firebase preview channel
+      - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           # Use the default GitHub Token for repo-specific actions
           repoToken: '${{ secrets.GITHUB_TOKEN }}' 
           
           # Use the JSON key stored as a secret (must be the key for 'theaiadvisoryboard')
-          # NOTE: The secret name MUST be FIREBASE_SERVICE_ACCOUNT (or FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD if that is the name you created)
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' 
           
           # CRITICAL FIX: The correct unhyphenated project ID
           projectId: 'theaiadvisoryboard'
           
-          # Additional deployment configuration
-          channelId: 'preview'
-          expires: 7d
+          # Deploying to the live site to bypass the Punycode preview channel URL issue
+          # channelId: 'preview' # Commented out
+          # expires: 7d          # Commented out
