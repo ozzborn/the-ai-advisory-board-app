@@ -6,38 +6,39 @@ on:
       - main # Trigger on push to the main branch
 
 jobs:
-  build_and_deploy: # Changed from 'deploy' for clarity
+  build_and_deploy: 
     runs-on: ubuntu-latest
     
     steps:
-      # 1. FIX: Checkout uses the default token and works reliably
+      # 1. CRITICAL FIX: Explicitly pass the GITHUB_TOKEN to the checkout action
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} 
-        # Note: No 'with: token' is needed here, as the default GITHUB_TOKEN is used.
+          token: ${{ secrets.GITHUB_TOKEN }} # Fixes the "terminal prompts disabled" error
 
-      # 2. Build Steps (Replace or expand these with your project's build logic)
+      # 2. Build Steps 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use a modern, stable Node version
+          node-version: '20'
 
       - name: Install Dependencies
-        run: npm install
+        # This will now succeed because the package.json syntax has been corrected
+        run: npm install 
 
       - name: Build Project
-        # Assuming your build command is 'npm run build' which outputs to 'public'
+        # This command creates the final static files in the 'build' directory (correct for React)
         run: npm run build 
 
-      # 3. FIX: Deployment uses the correct project ID and secrets
+      # 3. Deployment Step 
       - name: Deploy to Firebase preview channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # Use the default GitHub Token for repo-specific actions (required by the deploy action)
+          # Use the default GitHub Token for repo-specific actions
           repoToken: '${{ secrets.GITHUB_TOKEN }}' 
           
           # Use the JSON key stored as a secret (must be the key for 'theaiadvisoryboard')
+          # NOTE: The secret name MUST be FIREBASE_SERVICE_ACCOUNT (or FIREBASE_SERVICE_ACCOUNT_THEAIADVISORYBOARD if that is the name you created)
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' 
           
           # CRITICAL FIX: The correct unhyphenated project ID
