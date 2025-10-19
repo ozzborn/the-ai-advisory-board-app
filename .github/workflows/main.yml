@@ -3,47 +3,40 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main # Trigger on push to the main branch
+      - main 
 
 jobs:
   build_and_deploy: 
     runs-on: ubuntu-latest
     
     steps:
-      # 1. CRITICAL FIX: Explicitly pass the GITHUB_TOKEN to the checkout action
+      # 1. Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          # This line fixes the "terminal prompts disabled" authentication error
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      # 2. Build Steps (Standard React Application)
+      # 2. Build Steps 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install Dependencies
-        # This succeeds now that package.json syntax is clean
         run: npm install 
 
       - name: Build Project
-        # This command creates the final static files in the 'build' directory (required by firebase.json)
         run: npm run build 
 
-      # 3. Deployment Step 
-      - name: Deploy to Firebase Hosting
+      # 3. Final Deployment Step to Production
+      - name: Deploy to Firebase Production
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # Use the default GitHub Token for repo-specific actions
           repoToken: '${{ secrets.GITHUB_TOKEN }}' 
-          
-          # Use the JSON key stored as a secret (must be the key for 'theaiadvisoryboard')
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' 
-          
-          # CRITICAL FIX: The correct unhyphenated project ID
           projectId: 'theaiadvisoryboard'
           
-          # Deploying to the live site to bypass the Punycode preview channel URL issue
-          channelId: 'preview' 
-          expires: 7d          
+          # CRITICAL FIX: Use the 'live' channel to deploy to the production URL
+          channelId: 'live' 
+          
+          # Optional: You can remove the 'expires' line as live channels don't expire.
