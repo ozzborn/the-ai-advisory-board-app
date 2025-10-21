@@ -1,7 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth'; // NEW Import
-import { auth } from './firebase'; // NEW Import
+import { auth } from '../firebase'; // 👈 CHANGED PATH
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'; 
 
 import Sidebar from './components/Sidebar'; 
 import Login from './pages/Login'; // NEW Import
