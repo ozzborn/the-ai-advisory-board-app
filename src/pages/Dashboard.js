@@ -20,15 +20,7 @@ const activityCardStyle = {
 
 function Dashboard() {
   // Placeholder data - replace with data fetched from Firebase/API
-  let _metrics = [
-    { title: 'Total Advisors', value: '42' },
-    { title: 'Open Submissions', value: '15' },
-    { title: 'Avg. Response Time', value: '3.4 Days' },
-  ];
 
-  let _recentActivity = [
-    // ... list of activity objects
-  ];
 
   return (
     <div style={dashboardStyle}>
