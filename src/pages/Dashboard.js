@@ -1,14 +1,16 @@
 import React from 'react';
+import MetricCard from '../components/MetricCard'; // Import the new component
 
 function Dashboard() {
   return (
     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
       <h2>AI Advisory Board - Main Dashboard</h2>
 
-      {/* Placeholder for Key Metrics */}
-      <section style={{ border: '1px solid #ccc', padding: '20px' }}>
-        <h3>Key Performance Indicators (KPIs)</h3>
-        <p>Future data charts and metric cards will be displayed here.</p>
+      {/* Use MetricCard components for KPIs */}
+      <section style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+        <MetricCard title="Total Advisors" value="42" />
+        <MetricCard title="Open Submissions" value="15" />
+        <MetricCard title="Avg. Response Time" value="3.4 Days" />
       </section>
 
       {/* Placeholder for Activity Feed/List */}
