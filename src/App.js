@@ -1,43 +1,91 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth'; // NEW Import
-import { auth } from './firebase';
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'; 
+// src/App.js
 
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
+import { auth } from './firebase'; // Confirmed path is './firebase' since firebase.js is in src/
+// 💥 NEW: Import Sidebar from components and REMOVE NavBar 💥
 import Sidebar from './components/Sidebar'; 
-import Login from './pages/Login'; // NEW Import
+
+// Import your page components
+import Login from './pages/Login'; 
 import Dashboard from './pages/Dashboard'; 
-import Submissions from './pages/Submissions';
+import Submissions from './pages/Submissions'; 
 import About from './pages/About'; 
 
-function App() {
-  // Use the hook to get the user state and loading status
-  const [user, loading] = useAuthState(auth);
+// -----------------------------------------------------------------------------
+// Component to protect routes
+// -----------------------------------------------------------------------------
+const ProtectedRoute = ({ element: Element, ...rest }) => {
+  const { user, loading } = rest;
 
   if (loading) {
-    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading Application...</div>;
+    return <div>Loading authentication state...</div>;
   }
+  
+  return user ? <Element /> : <Navigate to="/login" replace />;
+};
 
-  // Check if the user is NOT logged in
-  if (!user) {
-    // If not logged in, render only the Login component
-    return <Login />;
-  }
+// -----------------------------------------------------------------------------
+// Main Application Component
+// -----------------------------------------------------------------------------
+function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // If logged in (user object exists), render the main application layout
-  return (
+  useEffect(() => {
+    // 1. CRITICAL: Handle Redirect Result to complete signInWithRedirect
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          console.log("Redirect sign-in successful:", result.user.email);
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        console.error("Error during redirect sign-in:", error);
+      })
+      .finally(() => {
+        // 2. Set up Auth State Listener
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+          setLoading(false);
+        });
+        return unsubscribe;
+      });
+  }, []); 
+
+  // If the user is logged in, show the full app layout (Sidebar + Content)
+  const appLayout = user ? (
     <div style={{ display: 'flex' }}>
-
-      <Sidebar /> 
-
-      <main style={{ marginLeft: '200px', flexGrow: 1 }}> 
+      <Sidebar />
+      <main style={{ flexGrow: 1, padding: '20px' }}>
         <Routes>
-          <Route path="/" element={<Dashboard />} /> 
-          <Route path="/submissions" element={<Submissions />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route 
+            path="/dashboard" 
+            element={<ProtectedRoute element={Dashboard} user={user} loading={loading} />} 
+          />
+          <Route 
+            path="/submissions" 
+            element={<ProtectedRoute element={Submissions} user={user} loading={loading} />} 
+          />
           <Route path="/about" element={<About />} />
+          {/* Note: /login is intentionally not shown when the user is logged in */}
         </Routes>
       </main>
     </div>
+  ) : (
+    // If the user is NOT logged in, only show the Login page
+    <Routes>
+      <Route path="*" element={<Login />} />
+    </Routes>
+  );
+
+  return (
+    <Router>
+      {appLayout}
+    </Router>
   );
 }
 
