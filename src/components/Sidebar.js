@@ -1,12 +1,37 @@
-// src/components/Sidebar.js
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-// 💥 CRITICAL: Import auth and the signOut function 💥
 import { auth } from '../firebase'; 
 import { signOut } from 'firebase/auth'; 
 
-// ... (your existing styles and constants)
+// 💥 CRITICAL: ENSURE THESE STYLE OBJECTS ARE DEFINED HERE 💥
+const sidebarStyle = {
+  width: '250px',
+  height: '100vh',
+  backgroundColor: '#343a40', 
+  color: 'white',
+  padding: '20px',
+  boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
+  position: 'sticky', 
+  top: 0
+};
+
+const menuTitleStyle = {
+  fontSize: '1.5em',
+  marginBottom: '30px',
+  textAlign: 'center',
+  borderBottom: '1px solid #495057',
+  paddingBottom: '10px'
+};
+
+const linkStyle = {
+  display: 'block',
+  color: 'white',
+  textDecoration: 'none',
+  padding: '10px 0',
+  fontSize: '1.1em',
+  transition: 'background-color 0.2s',
+  borderRadius: '4px'
+};
 
 function Sidebar() {
   
