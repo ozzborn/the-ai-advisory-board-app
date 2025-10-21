@@ -1,1 +1,7 @@
 /node_modules
+
+# Build output
+/build
+
+# Dependency lock file (optional, but good practice for CI/CD)
+package-lock.json
