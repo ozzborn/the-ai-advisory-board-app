@@ -10,7 +10,7 @@ import Login from './Login'; // The Login page with the sign-in button
 import Dashboard from './Dashboard'; // The main secured content
 import Submissions from './Submissions'; // An example secured page
 import About from './About'; // A simple public page
-import Sidebar from '../components/Sidebar';
+
 
 // -----------------------------------------------------------------------------
 // Component to protect routes (if user is not authenticated, redirect to Login)
