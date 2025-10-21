@@ -99,7 +99,7 @@ function App() {
     // UNAUTHENTICATED LAYOUT: Only the Login page
     <Routes>
       {/* All paths lead to Login when unauthenticated */}
-      <Route path="*" element={<Login />} />
+      <Route path="*" element={<Login />} /> 
     </Routes>
   );
 
