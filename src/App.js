@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css'; 
 import NavBar from './NavBar';
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home'; 
+//import Home from './pages/Home'; 
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
 
@@ -13,7 +13,6 @@ function App() {
 
       <main>
         <Routes>
-          {/* Change the route element from <Home /> to <Dashboard /> */}
           <Route path="/" element={<Dashboard />} /> 
           <Route path="/about" element={<About />} />
         </Routes>
