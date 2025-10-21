@@ -1,59 +1,48 @@
+// src/components/Sidebar.js
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+// 💥 CRITICAL: Import auth and the signOut function 💥
+import { auth } from '../firebase'; 
+import { signOut } from 'firebase/auth'; 
 
-const sidebarStyle = {
-  width: '250px',
-  height: '100vh',
-  backgroundColor: '#343a40', // Dark background for contrast
-  color: 'white',
-  padding: '20px',
-  boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-  position: 'sticky', // Makes it stick to the side as you scroll content
-  top: 0
-};
-
-const menuTitleStyle = {
-  fontSize: '1.5em',
-  marginBottom: '30px',
-  textAlign: 'center',
-  borderBottom: '1px solid #495057',
-  paddingBottom: '10px'
-};
-
-const linkStyle = {
-  display: 'block',
-  color: 'white',
-  textDecoration: 'none',
-  padding: '10px 0',
-  fontSize: '1.1em',
-  transition: 'background-color 0.2s',
-  borderRadius: '4px'
-};
-
-// You can use a state hook (e.g., useState) to manage which link is active,
-// but for a clean start, we'll keep it simple.
+// ... (your existing styles and constants)
 
 function Sidebar() {
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      // The onAuthStateChanged listener in App.js will handle the redirect to the login page
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div style={sidebarStyle}>
-      <div style={menuTitleStyle}>Dashboard Menu</div>
+      {/* ... (Menu content) ... */}
       <nav>
-        {/* Link to the Dashboard page */}
-        <Link to="/dashboard" style={linkStyle}>
-          Dashboard
-        </Link>
-        
-        {/* Link to the Submissions page */}
-        <Link to="/submissions" style={linkStyle}>
-          Submissions
-        </Link>
-        
-        {/* Link to the About page */}
-        <Link to="/about" style={linkStyle}>
-          About
-        </Link>
+        {/* ... (Your existing links) ... */}
       </nav>
-      {/* Optional: Add a Sign Out Button here */}
+      
+      {/* Sign Out Button */}
+      <button 
+        onClick={handleSignOut} 
+        style={{
+          // Apply some simple button styles here
+          width: '100%', 
+          marginTop: '30px',
+          padding: '10px',
+          backgroundColor: '#dc3545', // Red for Sign Out
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        Sign Out
+      </button>
     </div>
   );
 }
