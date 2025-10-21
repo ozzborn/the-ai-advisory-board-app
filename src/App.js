@@ -1,10 +1,7 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
 import { auth } from './firebase'; // Confirmed path is './firebase' since firebase.js is in src/
-// 💥 NEW: Import Sidebar from components and REMOVE NavBar 💥
 import Sidebar from './components/Sidebar'; 
 
 // Import your page components
