@@ -1,57 +1,95 @@
-import React from 'react';
-import { auth } from '../firebase';
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'; 
+// src/App.js
 
-const loginStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  backgroundColor: '#f4f7f6'
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
+import { auth } from './firebase'; // Assuming your Firebase config is exported from here
+
+// Import your page components
+import Login from './pages/Login'; // The Login page with the sign-in button
+import Dashboard from './pages/Dashboard'; // The main secured content
+import Submissions from './pages/Submissions'; // An example secured page
+import About from './pages/About'; // A simple public page
+import NavBar from './NavBar'; // Your top navigation bar
+
+// -----------------------------------------------------------------------------
+// Component to protect routes (if user is not authenticated, redirect to Login)
+// -----------------------------------------------------------------------------
+const ProtectedRoute = ({ element: Element, ...rest }) => {
+  const { user, loading } = rest;
+
+  if (loading) {
+    return <div>Loading authentication state...</div>; // Show a loading state
+  }
+  
+  // If user is logged in, show the requested element
+  return user ? <Element /> : <Navigate to="/login" replace />;
 };
 
-const cardStyle = {
-  padding: '40px',
-  backgroundColor: 'white',
-  borderRadius: '8px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  textAlign: 'center'
-};
+// -----------------------------------------------------------------------------
+// Main Application Component
+// -----------------------------------------------------------------------------
+function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const buttonStyle = {
-  padding: '10px 20px',
-  fontSize: '16px',
-  backgroundColor: '#4285F4', // Google Blue
-  color: 'white',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  marginTop: '20px'
-};
+  useEffect(() => {
+    // 1. **Handle Redirect Result First**
+    // This is CRITICAL for signInWithRedirect to complete the sign-in process
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          // If a user was successfully signed in via redirect, result.user will exist
+          console.log("Redirect sign-in successful:", result.user.email);
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        // Handle any errors from the redirect process
+        console.error("Error during redirect sign-in:", error);
+      })
+      .finally(() => {
+        // 2. **Set up Auth State Listener**
+        // This listener will update the user state on every sign-in/sign-out
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+          setLoading(false);
+        });
 
-function Login() {
-  const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      // Using signInWithRedirect to guarantee sign-in across all browsers/security settings
-      await signInWithRedirect(auth, provider);
-    } catch (error) {
-      console.error("Error signing in with Google:", error);
-    }
-  };
+        // Cleanup subscription on unmount
+        return unsubscribe;
+      });
+  }, []); // Run only once on mount
 
   return (
-    <div style={loginStyle}>
-      <div style={cardStyle}>
-        <h2>AI Advisory Board Access</h2>
-        <p>Sign in to view the private dashboard.</p>
-        <button style={buttonStyle} onClick={signInWithGoogle}>
-          Sign In with Google
-        </button>
+    <Router>
+      <div className="App">
+        {/* The NavBar component would typically be here, 
+            and it can conditionally show "Sign Out" or other links based on the 'user' state */}
+        <NavBar user={user} />
+        
+        <div style={{ padding: '20px' }}>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<About />} /> 
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+
+            {/* Private/Protected Routes */}
+            <Route 
+              path="/dashboard" 
+              element={<ProtectedRoute element={Dashboard} user={user} loading={loading} />} 
+            />
+            <Route 
+              path="/submissions" 
+              element={<ProtectedRoute element={Submissions} user={user} loading={loading} />} 
+            />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
-export default Login;
+export default App;
