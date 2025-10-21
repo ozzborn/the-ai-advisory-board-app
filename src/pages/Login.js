@@ -66,7 +66,7 @@ function App() {
       <div className="App">
         {/* The NavBar component would typically be here, 
             and it can conditionally show "Sign Out" or other links based on the 'user' state */}
-        <NavBar user={user} />
+        <SideBar user={user} />
         
         <div style={{ padding: '20px' }}>
           <Routes>
