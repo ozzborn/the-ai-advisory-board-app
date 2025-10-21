@@ -105,8 +105,9 @@ function App() {
   );
 
   return (
-    // 💥 The outer Router component is GONE, resolving the critical error! 💥
+    // <Router> was here, but it's now removed!
     <>{appLayout}</>
+    // </Router> was here, but it's now removed!
   );
 }
 
