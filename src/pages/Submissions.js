@@ -1,14 +1,53 @@
 import React from 'react';
+import SubmissionRow from '../components/SubmissionRow'; // Assuming the SubmissionRow component is in src/components/
 
 function Submissions() {
+  // Dummy data for the list
+  const submissionsData = [
+    { id: 101, title: "Policy on Predictive AI Ethics", status: "Open", advisor: "Alice Smith" },
+    { id: 102, title: "Technical Proposal: Real-Time Data Anonymization", status: "In Review", advisor: "Bob Johnson" },
+    { id: 103, title: "Risk Assessment of Quantum Computing", status: "Closed", advisor: "Carol Davis" },
+  ];
+  
+  // Header for the list/table
+  // Note: We need to recreate the style of SubmissionRow.rowStyle for the header, 
+  // but since we cannot assume access to its static properties, we'll define a similar style here
+  const headerStyle = {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr 1fr 1fr', // Must match SubmissionRow grid layout
+    fontWeight: 'bold',
+    padding: '12px 0',
+    borderBottom: '2px solid #ccc',
+    marginTop: '20px'
+  };
+
   return (
     <div style={{ padding: '20px' }}>
       <h2>Advisor Submissions & Proposals</h2>
+      
+      <div style={{ border: '1px solid #ccc', padding: '20px', marginTop: '20px', borderRadius: '8px' }}>
+        
+        {/* List Header */}
+        <div style={headerStyle}>
+          <span>ID</span>
+          <span>Title</span>
+          <span>Status</span>
+          <span>Advisor</span>
+        </div>
 
-      {/* Placeholder for a table or list of submissions */}
-      <div style={{ border: '1px solid #ccc', padding: '20px', marginTop: '20px' }}>
-        <p>Future table component to display all open and closed submissions will go here.</p>
-        <p>Each row will link to a detailed view.</p>
+        {/* List Rows */}
+        <div>
+          {submissionsData.map(sub => (
+            <SubmissionRow
+              key={sub.id}
+              id={sub.id}
+              title={sub.title}
+              status={sub.status}
+              advisor={sub.advisor}
+            />
+          ))}
+        </div>
+
       </div>
     </div>
   );
