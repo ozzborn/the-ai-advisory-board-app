@@ -1,13 +1,22 @@
 import React from 'react';
+import './App.css'; 
+// Assuming your navigation bar component is named NavBar
+// You may need to adjust the path if your component is in a subdirectory (e.g., './components/NavBar')
+import NavBar from './NavBar'; 
 
 function App() {
   return (
     <div className="App">
-      {/* PLACE YOUR NAVIGATION BAR CODE HERE, INSIDE THE DIV */}
-      <header className="App-header">
-        <h1>The AI Advisory Board App</h1>
-        <p>Start building your app here!</p>
-      </header>
+      {/* This is where you integrate your navigation bar. 
+        It replaces the old <header> tag with the boilerplate text.
+      */}
+      <NavBar /> 
+      
+      {/* Add a section for the main content below the navbar */}
+      <main>
+        {/* Your application's core content will go here */}
+        <h1>Welcome to the AI Advisory Board!</h1>
+      </main>
     </div>
   );
 }
