@@ -21,15 +21,19 @@ function Submissions() {
     borderBottom: '2px solid #ccc',
     marginTop: '20px'
   };
+    
+  const handleNewSubmission = () => {
+    alert('Ready to implement the New Submission form!');
+  };
 
   return (
     <div style={{ padding: '20px' }}>
-
+        
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>Advisor Submissions & Proposals</h2>
-        <Button onClick={handleNewSubmission}>
+       <h2>Advisor Submissions & Proposals</h2>
+       <Button onClick={handleNewSubmission}> 
           + Add New Submission
-        </Button>
+       </Button>
       </div>
 
       <div style={{ border: '1px solid #ccc', padding: '20px', marginTop: '20px', borderRadius: '8px' }}>
