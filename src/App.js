@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 // Router is NOT imported here, as it's provided by index.js
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -101,3 +99,14 @@ function App() {
     // UNAUTHENTICATED LAYOUT: Only the Login page
     <Routes>
       {/* All paths lead to Login when unauthenticated */}
+      <Route path="*" element={<Login />} />
+    </Routes>
+  );
+
+  return (
+    // The outer Router component is GONE, resolving the critical nesting error!
+    <>{appLayout}</>
+  );
+}
+
+export default App;
