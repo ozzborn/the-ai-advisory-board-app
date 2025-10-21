@@ -1,8 +1,9 @@
 import React from 'react';
-import SubmissionRow from '../components/SubmissionRow'; // Assuming the SubmissionRow component is in src/components/
-import Button from '../components/Button';
+import SubmissionRow from '../components/SubmissionRow'; 
+import Button from '../components/Button'; 
 
 function Submissions() {
+  
   // Dummy data for the list
   const submissionsData = [
     { id: 101, title: "Policy on Predictive AI Ethics", status: "Open", advisor: "Alice Smith" },
@@ -10,34 +11,56 @@ function Submissions() {
     { id: 103, title: "Risk Assessment of Quantum Computing", status: "Closed", advisor: "Carol Davis" },
   ];
   
-  // Header for the list/table
-  // Note: We need to recreate the style of SubmissionRow.rowStyle for the header, 
-  // but since we cannot assume access to its static properties, we'll define a similar style here
+  // Header style (must match SubmissionRow grid layout)
   const headerStyle = {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 1fr 1fr', // Must match SubmissionRow grid layout
+    gridTemplateColumns: '1fr 2fr 1fr 1fr', 
     fontWeight: 'bold',
     padding: '12px 0',
     borderBottom: '2px solid #ccc',
     marginTop: '20px'
   };
-    
+
+  // Function to resolve the no-undef error
   const handleNewSubmission = () => {
     alert('Ready to implement the New Submission form!');
   };
 
   return (
     <div style={{ padding: '20px' }}>
-        
+      
+      {/* Header and Button Row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-       <h2>Advisor Submissions & Proposals</h2>
-       <Button onClick={handleNewSubmission}> 
+        <h2>Advisor Submissions & Proposals</h2>
+        <Button onClick={handleNewSubmission}>
           + Add New Submission
-       </Button>
+        </Button>
       </div>
 
-      <div style={{ border: '1px solid #ccc', padding: '20px', marginTop: '20px', borderRadius: '8px' }}>
-        {/* ... (Header and SubmissionRows remain the same) ... */}
+      {/* Submissions List Container */}
+      <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px' }}>
+        
+        {/* List Header */}
+        <div style={headerStyle}>
+          <span>ID</span>
+          <span>Title</span>
+          <span>Status</span>
+          <span>Advisor</span>
+        </div>
+
+        {/* List Rows */}
+        <div>
+          {submissionsData.map(sub => (
+            <SubmissionRow
+              key={sub.id}
+              id={sub.id}
+              title={sub.title}
+              status={sub.status}
+              advisor={sub.advisor}
+            />
+          ))}
+        </div>
+
       </div>
     </div>
   );
