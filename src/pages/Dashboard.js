@@ -1,59 +1,44 @@
+// src/pages/Dashboard.js
+
 import React from 'react';
+// 💥 CRITICAL: ENSURE THESE IMPORTS ARE UNCOMMENTED IF YOU USE THEM BELOW 💥
+import MetricCard from '../components/MetricCard'; // Correct path from pages/ to components/
+import ActivityItem from '../components/ActivityItem'; // Correct path from pages/ to components/
 
 const dashboardStyle = {
-  padding: '20px'
+  // ...
 };
 
-const cardContainerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: '20px',
-  marginBottom: '40px'
-};
-
-const activityCardStyle = {
-  padding: '20px',
-  border: '1px solid #e0e0e0',
-  borderRadius: '8px',
-  backgroundColor: 'white'
-};
+// ... (rest of the file)
 
 function Dashboard() {
-  // Placeholder data - replace with data fetched from Firebase/API
-
+  // ... (data variables, if you re-added them)
 
   return (
     <div style={dashboardStyle}>
-      <h1>AI Advisory Board - Main Dashboard</h1>
+      {/* ... */}
 
       {/* KPI/Metric Cards Section */}
       <div style={cardContainerStyle}>
-        {/* If MetricCard is available, use it */}
+        {/* If you are using your custom MetricCard component, this section MUST be uncommented. */}
+        {/* If this section is uncommented, MetricCard MUST be imported at the top. */}
         {/* {metrics.map((metric, index) => (
           <MetricCard key={index} title={metric.title} value={metric.value} />
         ))} */}
         
-        {/* Placeholder rendering if MetricCard is not ready, based on your previous images */}
+        {/* If you are using the simple DIV PLACEHOLDERS, the MetricCard import is NOT needed. */}
         <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
             <h3>Total Advisors</h3>
             <h2>42</h2>
         </div>
-        <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
-            <h3>Open Submissions</h3>
-            <h2>15</h2>
-        </div>
-        <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
-            <h3>Avg. Response Time</h3>
-            <h2>3.4 Days</h2>
-        </div>
+        // ... (other placeholder cards)
       </div>
       
       {/* Recent Activity Section */}
       <div style={activityCardStyle}>
-        <h2>Recent Advisor Activity</h2>
-        {/* Placeholder for future list */}
-        <p>Future list of recent events or advice submissions will appear here.</p>
-        {/* If ActivityItem is available, use it */}
+        // ... (activity content)
+        {/* If you are using your custom ActivityItem component, this section MUST be uncommented. */}
+        {/* If this section is uncommented, ActivityItem MUST be imported at the top. */}
         {/* {recentActivity.map((activity, index) => (
           <ActivityItem key={index} activity={activity} />
         ))} */}
@@ -61,5 +46,3 @@ function Dashboard() {
     </div>
   );
 }
-
-export default Dashboard;
