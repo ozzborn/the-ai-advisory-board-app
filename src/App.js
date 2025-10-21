@@ -1,21 +1,34 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import NavBar from './NavBar'; // REMOVED the old NavBar
-import Sidebar from './components/Sidebar'; // NEW Import
+import { useAuthState } from 'react-firebase-hooks/auth'; // NEW Import
+import { auth } from './firebase'; // NEW Import
 
-// Import all your page components
+import Sidebar from './components/Sidebar'; 
+import Login from './pages/Login'; // NEW Import
 import Dashboard from './pages/Dashboard'; 
 import Submissions from './pages/Submissions';
 import About from './pages/About'; 
 
 function App() {
-  return (
-    // The main container uses Flexbox to align the Sidebar and the content area
-    <div style={{ display: 'flex' }}>
-      
-      <Sidebar /> {/* The fixed vertical navigation bar */}
+  // Use the hook to get the user state and loading status
+  const [user, loading] = useAuthState(auth);
 
-      {/* The main content area, offset by the sidebar width (200px) */}
+  if (loading) {
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading Application...</div>;
+  }
+
+  // Check if the user is NOT logged in
+  if (!user) {
+    // If not logged in, render only the Login component
+    return <Login />;
+  }
+
+  // If logged in (user object exists), render the main application layout
+  return (
+    <div style={{ display: 'flex' }}>
+
+      <Sidebar /> 
+
       <main style={{ marginLeft: '200px', flexGrow: 1 }}> 
         <Routes>
           <Route path="/" element={<Dashboard />} /> 
