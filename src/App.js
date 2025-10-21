@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css'; 
 import NavBar from './NavBar';
-import { Routes, Route } from 'react-router-dom'; // NEW IMPORT
-import Home from './pages/Home'; // Will create this next
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home'; 
+import About from './pages/About';
 
 function App() {
   return (
@@ -10,10 +11,9 @@ function App() {
       <NavBar /> 
 
       <main>
-        {/* DEFINE ROUTES HERE */}
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* Add more routes here, e.g., <Route path="/about" element={<About />} /> */}
+          <Route path="/about" element={<About />} /> {/* New Route */}
         </Routes>
       </main>
     </div>
