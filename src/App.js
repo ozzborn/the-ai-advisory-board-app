@@ -1,12 +1,12 @@
 // src/App.js
 
 import React, { useState, useEffect } from 'react';
-// Note: Router is NOT imported here, as it's provided by index.js
+// Router is NOT imported here, as it's provided by index.js
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
 import { auth } from './firebase'; 
 
-// Import components (paths confirmed by file structure image)
+// Import components
 import Sidebar from './components/Sidebar'; 
 import Login from './pages/Login'; 
 import Dashboard from './pages/Dashboard'; 
@@ -20,6 +20,7 @@ const ProtectedRoute = ({ element: Element, ...rest }) => {
   const { user, loading } = rest;
 
   if (loading) {
+    // Show a loading state while Firebase checks authentication
     return <div style={{padding: '20px'}}>Loading authentication state...</div>; 
   }
   
@@ -100,15 +101,3 @@ function App() {
     // UNAUTHENTICATED LAYOUT: Only the Login page
     <Routes>
       {/* All paths lead to Login when unauthenticated */}
-      <Route path="*" element={<Login />} />
-    </Routes>
-  );
-
-  return (
-    // <Router> was here, but it's now removed!
-    <>{appLayout}</>
-    // </Router> was here, but it's now removed!
-  );
-}
-
-export default App;
