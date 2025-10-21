@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'; 
 import About from './pages/About';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} /> {/* New Route */}
+          {/* Change the route element from <Home /> to <Dashboard /> */}
+          <Route path="/" element={<Dashboard />} /> 
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
     </div>
