@@ -1,6 +1,6 @@
 import React from 'react';
 import { auth } from '../firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'; 
 
 const loginStyle = {
   display: 'flex',
@@ -34,6 +34,7 @@ function Login() {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
+      // Using signInWithRedirect to guarantee sign-in across all browsers/security settings
       await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google:", error);
