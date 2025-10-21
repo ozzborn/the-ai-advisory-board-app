@@ -1,41 +1,75 @@
 import React from 'react';
-import MetricCard from '../components/MetricCard';
-import ActivityItem from '../components/ActivityItem'; // New Import
+// Assuming MetricCard and ActivityItem are in src/components/
+// You need to ensure these components exist and are correctly imported.
+// import MetricCard from '../components/MetricCard'; 
+// import ActivityItem from '../components/ActivityItem'; 
+
+const dashboardStyle = {
+  padding: '20px'
+};
+
+const cardContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: '20px',
+  marginBottom: '40px'
+};
+
+const activityCardStyle = {
+  padding: '20px',
+  border: '1px solid #e0e0e0',
+  borderRadius: '8px',
+  backgroundColor: 'white'
+};
 
 function Dashboard() {
-  // Data to display in the feed
+  // Placeholder data - replace with data fetched from Firebase/API
+  const metrics = [
+    { title: 'Total Advisors', value: '42' },
+    { title: 'Open Submissions', value: '15' },
+    { title: 'Avg. Response Time', value: '3.4 Days' },
+  ];
+
   const recentActivity = [
-    { id: 1, advisor: "Alice Smith", action: "submitted a new policy brief.", time: "5 minutes ago" },
-    { id: 2, advisor: "Bob Johnson", action: "reviewed a technical proposal.", time: "1 hour ago" },
-    { id: 3, advisor: "Carol Davis", action: "updated status of 'Ethics AI' project.", time: "2 hours ago" },
+    // ... list of activity objects
   ];
 
   return (
-    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
+    <div style={dashboardStyle}>
+      <h1>AI Advisory Board - Main Dashboard</h1>
 
-      {/* Metric Cards Section (No change needed here) */}
-      <section style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-        <MetricCard title="Total Advisors" value="42" />
-        <MetricCard title="Open Submissions" value="15" />
-        <MetricCard title="Avg. Response Time" value="3.4 Days" />
-      </section>
-
-      {/* New: Activity Feed Section */}
-      <section style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px' }}>
-        <h3>Recent Advisor Activity</h3>
-        {/* Map over the data to render a list of ActivityItems */}
-        <div>
-          {recentActivity.map(item => (
-            <ActivityItem 
-              key={item.id} 
-              advisor={item.advisor} 
-              action={item.action} 
-              time={item.time} 
-            />
-          ))}
+      {/* KPI/Metric Cards Section */}
+      <div style={cardContainerStyle}>
+        {/* If MetricCard is available, use it */}
+        {/* {metrics.map((metric, index) => (
+          <MetricCard key={index} title={metric.title} value={metric.value} />
+        ))} */}
+        
+        {/* Placeholder rendering if MetricCard is not ready, based on your previous images */}
+        <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
+            <h3>Total Advisors</h3>
+            <h2>42</h2>
         </div>
-      </section>
-
+        <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
+            <h3>Open Submissions</h3>
+            <h2>15</h2>
+        </div>
+        <div style={{...activityCardStyle, flex: 1, textAlign: 'center'}}>
+            <h3>Avg. Response Time</h3>
+            <h2>3.4 Days</h2>
+        </div>
+      </div>
+      
+      {/* Recent Activity Section */}
+      <div style={activityCardStyle}>
+        <h2>Recent Advisor Activity</h2>
+        {/* Placeholder for future list */}
+        <p>Future list of recent events or advice submissions will appear here.</p>
+        {/* If ActivityItem is available, use it */}
+        {/* {recentActivity.map((activity, index) => (
+          <ActivityItem key={index} activity={activity} />
+        ))} */}
+      </div>
     </div>
   );
 }
