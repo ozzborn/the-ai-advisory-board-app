@@ -6,7 +6,7 @@ import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
 import { auth } from '../firebase';
 
 // Import your page components
-import Login from './pages/Login'; // The Login page with the sign-in button
+import Login from './Login'; // The Login page with the sign-in button
 import Dashboard from './pages/Dashboard'; // The main secured content
 import Submissions from './pages/Submissions'; // An example secured page
 import About from './pages/About'; // A simple public page
