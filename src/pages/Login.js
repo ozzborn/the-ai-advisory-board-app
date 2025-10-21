@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
-import { auth } from './firebase'; // Assuming your Firebase config is exported from here
+import { auth } from '../firebase';
 
 // Import your page components
 import Login from './pages/Login'; // The Login page with the sign-in button
