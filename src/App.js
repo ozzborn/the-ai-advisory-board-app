@@ -1,27 +1,25 @@
 // src/App.js
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// Note: Router is NOT imported here, as it's provided by index.js
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
 import { auth } from './firebase'; 
 
-// Import Sidebar from the components folder
+// Import components (paths confirmed by file structure image)
 import Sidebar from './components/Sidebar'; 
-
-// Import your page components (Paths are correct because App.js is in src/ and pages is in src/pages/)
 import Login from './pages/Login'; 
 import Dashboard from './pages/Dashboard'; 
 import Submissions from './pages/Submissions'; 
 import About from './pages/About'; 
 
 // -----------------------------------------------------------------------------
-// Component to protect routes (Redirects unauthenticated users to Login)
+// Component to protect routes
 // -----------------------------------------------------------------------------
 const ProtectedRoute = ({ element: Element, ...rest }) => {
   const { user, loading } = rest;
 
   if (loading) {
-    // Show a loading state while Firebase checks authentication
     return <div style={{padding: '20px'}}>Loading authentication state...</div>; 
   }
   
@@ -60,7 +58,7 @@ function App() {
       });
   }, []); 
 
-  // If the app is still loading the auth state, display a loading screen
+  // Display a loading screen while checking auth state
   if (loading) {
     return (
         <div style={{
@@ -101,15 +99,14 @@ function App() {
   ) : (
     // UNAUTHENTICATED LAYOUT: Only the Login page
     <Routes>
-      {/* All paths redirect to Login when unauthenticated */}
+      {/* All paths lead to Login when unauthenticated */}
       <Route path="*" element={<Login />} />
     </Routes>
   );
 
   return (
-    <Router>
-      {appLayout}
-    </Router>
+    // 💥 The outer Router component is GONE, resolving the critical error! 💥
+    <>{appLayout}</>
   );
 }
 
