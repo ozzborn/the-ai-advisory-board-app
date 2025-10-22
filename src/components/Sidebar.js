@@ -76,7 +76,12 @@ function Sidebar() {
         <Link to="/about" style={linkStyle}>
           About
         </Link>
-      </nav>
+  
+        {/* Link to the Admin page - CORRECTED */}
+        <Link to="/admin" style={linkStyle}>
+            Admin Config
+        </Link>
+      </nav> // <-- END OF NAVIGATION BLOCK
       
       {/* Sign Out Button */}
       <button 
