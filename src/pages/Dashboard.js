@@ -74,15 +74,14 @@ function Dashboard() {
                 <MetricCard title="Avg. Response Time" value={avgResponseTime} />
             </div>
 
-            {/* Recent Advisor Activity Section */}
+            {{/* Recent Advisor Activity Section */}
             <h2>Recent Advisor Activity</h2>
             <div style={{ padding: '10px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
                 {recentActivity.length > 0 ? (
                     recentActivity.map(item => (
                         <ActivityItem 
                             key={item.id} 
-                            submission={item} 
-                            // Assuming ActivityItem takes a submission object and displays status change
+                            submission={item} // <-- Uses the newly created ActivityItem
                         /> 
                     ))
                 ) : (
