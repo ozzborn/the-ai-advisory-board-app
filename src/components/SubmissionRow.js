@@ -1,31 +1,47 @@
 import React from 'react';
 
 const rowStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 2fr 1fr 1fr', // Defines columns for data
-  padding: '12px 0',
-  borderBottom: '1px solid #f0f0f0',
-  alignItems: 'center'
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '15px 0',
+    borderBottom: '1px solid #e0e0e0',
+    cursor: 'pointer',
+    transition: 'background-color 0.1s',
 };
 
-function SubmissionRow({ id, title, status, advisor }) {
-  // Simple status badge styling
-  const statusStyle = {
-    padding: '4px 8px',
-    borderRadius: '4px',
-    backgroundColor: status === 'Open' ? '#e6f7ff' : '#f0f0f0',
-    color: status === 'Open' ? '#0050b3' : '#595959',
-    fontWeight: 'bold'
-  };
+const cellStyle = {
+    flex: 1,
+    padding: '0 10px',
+    textAlign: 'left',
+};
 
-  return (
-    <div style={rowStyle}>
-      <span style={{fontWeight: 'bold'}}>{id}</span>
-      <span>{title}</span>
-      <span style={statusStyle}>{status}</span>
-      <span>{advisor}</span>
-    </div>
-  );
-}
+const SubmissionRow = ({ submission }) => {
+    // Determine status color
+    const statusColor = submission.status === 'Open' ? '#dc3545' : '#28a745';
+    
+    // Style for the Status indicator
+    const statusStyle = {
+        ...cellStyle,
+        flex: 0.5, // Make status column a bit narrower
+        color: statusColor,
+        fontWeight: 'bold',
+    };
+
+    return (
+        // Add a hover effect for a better user experience
+        <div 
+            style={rowStyle}
+            onMouseOver={e => e.currentTarget.style.backgroundColor = '#f4f4f4'}
+            onMouseOut={e => e.currentTarget.style.backgroundColor = 'white'}
+            onClick={() => console.log(`Viewing submission: ${submission.title}`)}
+        >
+            <div style={{...cellStyle, fontWeight: 'bold'}}>{submission.title}</div>
+            <div style={cellStyle}>{submission.advisor}</div>
+            <div style={statusStyle}>{submission.status}</div>
+            <div style={{...cellStyle, flex: 0.5, textAlign: 'right'}}>{submission.date}</div>
+        </div>
+    );
+};
 
 export default SubmissionRow;
