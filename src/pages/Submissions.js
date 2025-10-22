@@ -1,5 +1,3 @@
-// src/pages/Submissions.js
-
 import React, { useState, useEffect } from 'react';
 import SubmissionRow from '../components/SubmissionRow'; 
 import { db } from '../firebase'; // Import the initialized Firestore database
