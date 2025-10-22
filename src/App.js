@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Submissions from './pages/Submissions';
 import About from './pages/About'; 
 import Sidebar from './components/Sidebar';
+import Admin from './pages/Admin';
 import ProtectedRoute from './components/ProtectedRoute'; // Assuming this component exists
 
 // Styles
@@ -71,7 +72,7 @@ function App() {
     ) : (
         // UNAUTHENTICATED LAYOUT: Only the Login page
         <Routes>
-            {/* All paths lead to Login when unauthenticated */}
+            path="/admin"
             <Route path="*" element={<Login />} />
         </Routes>
     );
