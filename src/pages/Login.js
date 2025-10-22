@@ -33,10 +33,6 @@ const buttonStyle = {
   transition: 'background-color 0.2s',
 };
 
-const buttonHoverStyle = {
-    backgroundColor: '#0056b3', // Darker blue on hover
-};
-
 function Login() {
   const provider = new GoogleAuthProvider();
 
