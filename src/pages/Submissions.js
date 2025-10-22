@@ -1,5 +1,9 @@
-import React from 'react';
+// src/pages/Submissions.js
+
+import React, { useState, useEffect } from 'react';
 import SubmissionRow from '../components/SubmissionRow'; 
+import { db } from '../firebase'; // Import the initialized Firestore database
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 const containerStyle = {
     padding: '20px',
@@ -11,24 +15,52 @@ const headerStyle = {
     alignItems: 'center',
     padding: '15px 10px',
     fontWeight: 'bold',
-    borderBottom: '2px solid #343a40', // Dark separator line
+    borderBottom: '2px solid #343a40', 
     marginBottom: '10px',
     backgroundColor: '#f8f9fa'
 };
 
-// Simulated data for submissions (will eventually come from Firebase/Firestore)
-const submissionsData = [
-    { id: 1, title: 'Optimizing Q3 Budget Forecast', advisor: 'Dr. Evelyn Reed', status: 'Open', date: '2025-10-18' },
-    { id: 2, title: 'Impact of LLMs on HR Policy', advisor: 'Mr. Alex Chen', status: 'Open', date: '2025-10-17' },
-    { id: 3, title: 'Scaling ML Models in Europe', advisor: 'Dr. Sofia Khan', status: 'In Review', date: '2025-10-15' },
-    { id: 4, title: 'Ethical AI Guidelines v2.0', advisor: 'Ms. Jamie Lee', status: 'Completed', date: '2025-10-10' },
-];
-
 function Submissions() {
+    const [submissions, setSubmissions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // 1. Define the query: target the 'submissions' collection, ordered by date
+        const submissionsQuery = query(
+            collection(db, 'submissions'),
+            orderBy('date', 'desc')
+        );
+
+        // 2. Set up the real-time listener (onSnapshot)
+        const unsubscribe = onSnapshot(submissionsQuery, (snapshot) => {
+            const submissionsList = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            setSubmissions(submissionsList);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching submissions:", error);
+            setLoading(false);
+        });
+
+        // 3. Cleanup function: unsubscribe from the listener when the component unmounts
+        return () => unsubscribe();
+    }, []);
+
+    if (loading) {
+        return <div style={containerStyle}>Loading Submissions...</div>;
+    }
+
+    if (submissions.length === 0) {
+        return <div style={containerStyle}>No submissions found.</div>;
+    }
+
     return (
         <div style={containerStyle}>
             <h1>Advice Submissions</h1>
-            <p>Review and manage all incoming requests from the AI Advisory Board.</p>
+            <p>Review and manage all incoming requests from the AI Advisory Board. (Data is now live from Firestore)</p>
 
             {/* Header Row */}
             <div style={headerStyle}>
@@ -40,7 +72,7 @@ function Submissions() {
 
             {/* Submission List */}
             <div style={{backgroundColor: 'white', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)'}}>
-                {submissionsData.map(submission => (
+                {submissions.map(submission => (
                     <SubmissionRow key={submission.id} submission={submission} />
                 ))}
             </div>
