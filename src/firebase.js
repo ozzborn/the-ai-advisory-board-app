@@ -6,13 +6,12 @@ import { getFirestore } from 'firebase/firestore'; // <-- NEW IMPORT
 
 // Your Firebase configuration object (already present)
 const firebaseConfig = {
-  // Replace these with your actual Firebase config details
-  apiKey: "YOUR_API_KEY", 
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBQ5g9NUV4zL6-7KgFRn5If_9UyhSiXPkA",
+  authDomain: "theaiadvisoryboard.firebaseapp.com",
+  projectId: "theaiadvisoryboard",
+  storageBucket: "theaiadvisoryboard.firebasestorage.app",
+  messagingSenderId: "453439087143",
+  appId: "1:453439087143:web:6abefdb1ca5d9d03ba2402"
 };
 
 // Initialize Firebase
