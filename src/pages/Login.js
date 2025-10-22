@@ -1,8 +1,13 @@
+// src/pages/Login.js
+
 import React from 'react';
-import { signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../firebase'; // Ensure your firebase config is exported correctly
+// 💥 CRITICAL FIX: Changed from signInWithRedirect to signInWithPopup 
+// to avoid the "missing initial state" error on redirect.
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; 
+import { auth } from '../firebase'; // Import the initialized auth object
 
 // --- Style Definitions ---
+// Note: 'buttonHoverStyle' has been removed to fix the 'no-unused-vars' build error.
 const containerStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -33,17 +38,17 @@ const buttonStyle = {
   transition: 'background-color 0.2s',
 };
 
+
 function Login() {
   const provider = new GoogleAuthProvider();
 
   const handleSignIn = async () => {
     try {
-      // Use signInWithRedirect for a reliable sign-in experience
-      await signInWithRedirect(auth, provider);
-      // The application will refresh, and App.js will handle the user state.
+      // Uses pop-up sign-in, which avoids the redirect state corruption issue
+      await signInWithPopup(auth, provider); 
+      // App.js's onAuthStateChanged listener will automatically handle the user login
     } catch (error) {
       console.error("Error during sign in:", error);
-      // Optional: Display an error message to the user here
     }
   };
 
@@ -57,7 +62,6 @@ function Login() {
         <button 
           onClick={handleSignIn} 
           style={buttonStyle}
-          // You could add onMouseOver/onMouseOut handlers here for hover effects
         >
           Sign In with Google
         </button>
