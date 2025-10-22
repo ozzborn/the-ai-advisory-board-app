@@ -1,4 +1,6 @@
 import React from 'react';
+import { db } from '../firebase'; // Import Firestore db
+import { doc, updateDoc } from 'firebase/firestore'; // Import Firestore functions
 
 const rowStyle = {
     display: 'flex',
@@ -6,8 +8,7 @@ const rowStyle = {
     alignItems: 'center',
     padding: '15px 0',
     borderBottom: '1px solid #e0e0e0',
-    cursor: 'pointer',
-    transition: 'background-color 0.1s',
+    backgroundColor: 'white',
 };
 
 const cellStyle = {
@@ -16,29 +17,61 @@ const cellStyle = {
     textAlign: 'left',
 };
 
+const statusSelectStyle = {
+    padding: '5px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    cursor: 'pointer',
+    width: '100%',
+};
+
 const SubmissionRow = ({ submission }) => {
-    // Determine status color
-    const statusColor = submission.status === 'Open' ? '#dc3545' : '#28a745';
     
-    // Style for the Status indicator
-    const statusStyle = {
-        ...cellStyle,
-        flex: 0.5, // Make status column a bit narrower
-        color: statusColor,
-        fontWeight: 'bold',
+    // Function to handle the status change and update Firestore
+    const handleStatusChange = async (e) => {
+        const newStatus = e.target.value;
+        
+        try {
+            // Reference the specific document by its ID
+            const submissionRef = doc(db, "submissions", submission.id);
+            
+            // Update the 'status' field in Firestore
+            await updateDoc(submissionRef, {
+                status: newStatus,
+            });
+
+            console.log(`Submission ${submission.id} status updated to: ${newStatus}`);
+        } catch (error) {
+            console.error("Error updating submission status: ", error);
+        }
     };
+    
+    // Determine status color for visual feedback
+    const statusColor = {
+        'Open': '#dc3545',
+        'In Review': '#ffc107',
+        'Completed': '#28a745',
+    }[submission.status] || '#6c757d';
+
 
     return (
-        // Add a hover effect for a better user experience
-        <div 
-            style={rowStyle}
-            onMouseOver={e => e.currentTarget.style.backgroundColor = '#f4f4f4'}
-            onMouseOut={e => e.currentTarget.style.backgroundColor = 'white'}
-            onClick={() => console.log(`Viewing submission: ${submission.title}`)}
-        >
+        <div style={rowStyle}>
             <div style={{...cellStyle, fontWeight: 'bold'}}>{submission.title}</div>
             <div style={cellStyle}>{submission.advisor}</div>
-            <div style={statusStyle}>{submission.status}</div>
+            
+            {/* Status Dropdown */}
+            <div style={{...cellStyle, flex: 0.5}}>
+                <select 
+                    value={submission.status}
+                    onChange={handleStatusChange}
+                    style={{...statusSelectStyle, borderColor: statusColor, color: statusColor}}
+                >
+                    <option value="Open">Open</option>
+                    <option value="In Review">In Review</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            
             <div style={{...cellStyle, flex: 0.5, textAlign: 'right'}}>{submission.date}</div>
         </div>
     );
