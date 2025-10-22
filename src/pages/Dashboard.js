@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MetricCard from '../components/MetricCard'; // Import the card component
 import ActivityItem from '../components/ActivityItem'; // Assuming ActivityItem component exists
 import { db } from '../firebase'; // Import the Firestore database
-import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore'; 
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 const containerStyle = {
     padding: '20px',
