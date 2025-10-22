@@ -58,40 +58,42 @@ function Sidebar() {
     }
   };
 
-  return (
+  // src/components/Sidebar.js (Inside the return statement)
+
+return (
     <div style={sidebarStyle}>
-      <div style={menuTitleStyle}>Dashboard Menu</div>
-      <nav>
-        {/* Link to the Dashboard page */}
-        <Link to="/dashboard" style={linkStyle}>
-          Dashboard
-        </Link>
+        <div style={menuTitleStyle}>Dashboard Menu</div>
+        <nav> 
+            {/* Link to the Dashboard page */}
+            <Link to="/dashboard" style={linkStyle}>
+                Dashboard
+            </Link>
+            
+            {/* Link to the Submissions page */}
+            <Link to="/submissions" style={linkStyle}>
+                Submissions
+            </Link>
+            
+            {/* Link to the About page */}
+            <Link to="/about" style={linkStyle}>
+                About
+            </Link>
+            
+            {/* Link to the Admin page */}
+            <Link to="/admin" style={linkStyle}>
+                Admin Config // <-- MAKE SURE THIS LINE IS CLEAN
+            </Link>
+        </nav> 
         
-        {/* Link to the Submissions page */}
-        <Link to="/submissions" style={linkStyle}>
-          Submissions
-        </Link>
-        
-        {/* Link to the About page */}
-        <Link to="/about" style={linkStyle}>
-          About
-        </Link>
-  
-        {/* Link to the Admin page - CORRECTED */}
-        <Link to="/admin" style={linkStyle}>
-            Admin Config
-        </Link>
-      </nav> // <-- END OF NAVIGATION BLOCK
-      
-      {/* Sign Out Button */}
-      <button 
-        onClick={handleSignOut} 
-        style={signOutButtonStyle}
-      >
-        Sign Out
-      </button>
+        {/* Sign Out Button */}
+        <button 
+            onClick={handleSignOut} 
+            style={signOutButtonStyle}
+        >
+            Sign Out
+        </button>
     </div>
-  );
+);
 }
 
 export default Sidebar;
