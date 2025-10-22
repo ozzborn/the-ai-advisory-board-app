@@ -73,40 +73,28 @@ function App() {
   }
 
   // Define the layout based on authentication status
-  const appLayout = user ? (
-    // AUTHENTICATED LAYOUT: Sidebar + Protected Content
+const appLayout = user ? (
+    // AUTHENTICATED LAYOUT
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ flexGrow: 1, padding: '20px' }}>
-        <Routes>
-          {/* Default authenticated route */}
-          <Route path="/" element={<Navigate to="/dashboard" />} /> 
-          
-          {/* Protected Routes */}
-          <Route 
-            path="/dashboard" 
-            element={<ProtectedRoute element={Dashboard} user={user} loading={loading} />} 
-          />
-          <Route 
-            path="/submissions" 
-            element={<ProtectedRoute element={Submissions} user={user} loading={loading} />} 
-          />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </main>
+        <Sidebar />
+        <main style={{ flexGrow: 1, padding: '20px' }}>
+            <Routes>
+                {/* Default authenticated route */}
+                <Route path="/" element={<Navigate to="/dashboard" />} />
+                
+                {/* Protected Routes */}
+                <Route path="/dashboard" element={<Protected... />} />
+                <Route path="/submissions" element={<Protected... />} />
+                <Route path="/about" element={<About />} />
+            </Routes>
+        </main>
     </div>
-  ) : (
-    // UNAUTHENTICATED LAYOUT: Only the Login page
+) : (
+    // UNAUTHENTICATED LAYOUT
     <Routes>
-      {/* All paths lead to Login when unauthenticated */}
-      <Route path="*" element={<Login />} /> 
+        {/* All paths lead to Login when unauthenticated */}
+        <Route path="*" element={<Login />} />
     </Routes>
-  );
-
-  return (
-    // The outer Router component is GONE, resolving the critical nesting error!
-    <>{appLayout}</>
-  );
-}
+);
 
 export default App;
