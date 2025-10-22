@@ -1,84 +1,96 @@
-import React from 'react';
-// Import custom components from the components directory.
-// UNCOMMENT THESE LINES ONLY IF you intend to use the MetricCard and ActivityItem components 
-// in your JSX below, otherwise the build will fail if they are not defined or imported correctly.
-// import MetricCard from '../components/MetricCard'; 
-// import ActivityItem from '../components/ActivityItem'; 
+import React, { useState, useEffect } from 'react';
+import MetricCard from '../components/MetricCard'; // Import the card component
+import ActivityItem from '../components/ActivityItem'; // Assuming ActivityItem component exists
+import { db } from '../firebase'; // Import the Firestore database
+import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore'; 
 
-const dashboardStyle = {
-  padding: '20px'
+const containerStyle = {
+    padding: '20px',
 };
 
-const cardContainerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: '20px',
-  marginBottom: '40px'
-};
-
-const activityCardStyle = {
-  padding: '20px',
-  border: '1px solid #e0e0e0',
-  borderRadius: '8px',
-  backgroundColor: 'white'
-};
-
-const metricItemStyle = {
-    ...activityCardStyle, 
-    flex: 1, 
-    textAlign: 'center'
+const metricsContainerStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginBottom: '30px',
 };
 
 function Dashboard() {
-  // NOTE: Unused variables like 'metrics' and 'recentActivity' 
-  // have been removed to resolve the build failure.
+    const [submissions, setSubmissions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  return (
-    <div style={dashboardStyle}>
-      <h1>AI Advisory Board - Main Dashboard</h1>
+    useEffect(() => {
+        // Fetch ALL submissions to calculate metrics
+        const submissionsQuery = query(
+            collection(db, 'submissions'),
+            orderBy('date', 'desc')
+        );
 
-      {/* KPI/Metric Cards Section (Using simple DIVs to ensure no crashes) */}
-      <div style={cardContainerStyle}>
-        
-        {/* Total Advisors Card */}
-        <div style={metricItemStyle}>
-            <h3>Total Advisors</h3>
-            <h2>42</h2>
-        </div>
-        
-        {/* Open Submissions Card */}
-        <div style={metricItemStyle}>
-            <h3>Open Submissions</h3>
-            <h2>15</h2>
-        </div>
-        
-        {/* Avg. Response Time Card */}
-        <div style={metricItemStyle}>
-            <h3>Avg. Response Time</h3>
-            <h2>3.4 Days</h2>
-        </div>
+        const unsubscribe = onSnapshot(submissionsQuery, (snapshot) => {
+            const submissionsList = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            setSubmissions(submissionsList);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching dashboard data:", error);
+            setLoading(false);
+        });
 
-        {/* If using MetricCard component, you would use: 
-        {metrics.map((metric, index) => (
-          <MetricCard key={index} title={metric.title} value={metric.value} />
-        ))} 
-        */}
-      </div>
-      
-      {/* Recent Activity Section */}
-      <div style={activityCardStyle}>
-        <h2>Recent Advisor Activity</h2>
-        <p>Future list of recent events or advice submissions will appear here.</p>
+        return () => unsubscribe();
+    }, []);
+
+    // --- METRIC CALCULATION LOGIC ---
+    const calculateMetrics = () => {
+        const totalAdvisors = 42; // Static for now, until we add an 'advisors' collection
+        const openSubmissions = submissions.filter(s => s.status === 'Open').length;
         
-        {/* If using ActivityItem component:
-        {recentActivity.map((activity, index) => (
-          <ActivityItem key={index} activity={activity} />
-        ))} 
-        */}
-      </div>
-    </div>
-  );
+        // Mock calculation for Avg. Response Time (needs complex date math, so we'll simplify)
+        const avgResponseTime = submissions.length > 0 ? '3.4 Days' : 'N/A';
+        
+        // Take the top 5 recent submissions for the activity list
+        const recentActivity = submissions.slice(0, 5);
+
+        return { totalAdvisors, openSubmissions, avgResponseTime, recentActivity };
+    };
+
+    const { totalAdvisors, openSubmissions, avgResponseTime, recentActivity } = calculateMetrics();
+
+
+    if (loading) {
+        return <div style={containerStyle}>Loading Dashboard Metrics...</div>;
+    }
+
+    return (
+        <div style={containerStyle}>
+            <h1>AI Advisory Board - Main Dashboard</h1>
+
+            {/* Metrics Cards */}
+            <div style={metricsContainerStyle}>
+                <MetricCard title="Total Advisors" value={totalAdvisors} />
+                <MetricCard title="Open Submissions" value={openSubmissions} />
+                <MetricCard title="Avg. Response Time" value={avgResponseTime} />
+            </div>
+
+            {/* Recent Advisor Activity Section */}
+            <h2>Recent Advisor Activity</h2>
+            <div style={{ padding: '10px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                {recentActivity.length > 0 ? (
+                    recentActivity.map(item => (
+                        <ActivityItem 
+                            key={item.id} 
+                            submission={item} 
+                            // Assuming ActivityItem takes a submission object and displays status change
+                        /> 
+                    ))
+                ) : (
+                    <p>No recent activity found.</p>
+                )}
+            </div>
+        </div>
+    );
 }
 
-// 💥 CRITICAL: This is the missing default export that caused the previous error 💥
 export default Dashboard;
