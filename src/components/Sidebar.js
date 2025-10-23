@@ -1,99 +1,100 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { auth } from '../firebase'; // Import Firebase auth object
-import { signOut } from 'firebase/auth'; // Import the signOut function
+// src/components/Sidebar.js
 
-// --- Style Definitions ---
-// Define all styles outside the component so they can be referenced inside.
+import React from 'react';
+import { Link } from 'react-router-dom'; // Using Link for consistent styling
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+
+// --- Styling Definitions ---
 const sidebarStyle = {
-  width: '250px',
-  height: '100vh',
-  backgroundColor: '#343a40', // Dark background
-  color: 'white',
-  padding: '20px',
-  boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
-  position: 'sticky', // Makes it stick to the side
-  top: 0,
-  flexShrink: 0, // Prevents sidebar from being compressed
+    width: '250px',
+    backgroundColor: '#343a40', // Dark background
+    color: 'white',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
 };
 
 const menuTitleStyle = {
-  fontSize: '1.5em',
-  marginBottom: '30px',
-  textAlign: 'center',
-  borderBottom: '1px solid #495057',
-  paddingBottom: '10px',
+    fontSize: '1.4em',
+    marginBottom: '30px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    borderBottom: '1px solid #495057',
+    paddingBottom: '15px',
 };
 
 const linkStyle = {
-  display: 'block',
-  color: 'white',
-  textDecoration: 'none',
-  padding: '10px 15px',
-  fontSize: '1.1em',
-  transition: 'background-color 0.2s',
-  borderRadius: '4px',
+    display: 'block',
+    padding: '12px 15px',
+    marginBottom: '5px',
+    textDecoration: 'none',
+    color: 'white',
+    borderRadius: '4px',
+    transition: 'background-color 0.2s',
+};
+
+// Add hover effect for better UX
+const navHoverStyle = {
+    backgroundColor: '#495057', 
 };
 
 const signOutButtonStyle = {
-  width: '100%',
-  marginTop: '30px',
-  padding: '10px',
-  backgroundColor: '#dc3545', // Red for Sign Out
-  color: 'white',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  fontSize: '1em',
+    backgroundColor: '#dc3545', // Red for Sign Out
+    color: 'white',
+    border: 'none',
+    padding: '10px 15px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginTop: 'auto', // Pushes the button to the bottom
+    fontSize: '1em',
 };
 
+// --- Component Definition ---
+
 function Sidebar() {
-  
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      // App.js handles the user state change and redirects to /login
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
+    const handleSignOut = () => {
+        signOut(auth).catch((error) => {
+            console.error("Sign Out Error:", error);
+        });
+    };
 
-  // src/components/Sidebar.js (Inside the return statement)
-
-return (
-    <div style={sidebarStyle}>
-        <div style={menuTitleStyle}>Dashboard Menu</div>
-        <nav> 
-            {/* Link to the Dashboard page */}
-            <Link to="/dashboard" style={linkStyle}>
-                Dashboard
-            </Link>
+    return (
+        <div style={sidebarStyle}>
+            <div style={menuTitleStyle}>Dashboard Menu</div>
+            <nav>
+                {/* Dashboard */}
+                <Link to="/dashboard" style={linkStyle} onMouseOver={(e) => e.currentTarget.style.backgroundColor = navHoverStyle.backgroundColor} onMouseOut={(e) => e.currentTarget.style.backgroundColor = linkStyle.backgroundColor}>
+                    Dashboard
+                </Link>
+                
+                {/* Submissions */}
+                <Link to="/submissions" style={linkStyle} onMouseOver={(e) => e.currentTarget.style.backgroundColor = navHoverStyle.backgroundColor} onMouseOut={(e) => e.currentTarget.style.backgroundColor = linkStyle.backgroundColor}>
+                    Submissions
+                </Link>
+                
+                {/* About */}
+                <Link to="/about" style={linkStyle} onMouseOver={(e) => e.currentTarget.style.backgroundColor = navHoverStyle.backgroundColor} onMouseOut={(e) => e.currentTarget.style.backgroundColor = linkStyle.backgroundColor}>
+                    About
+                </Link>
+                
+                {/* Admin Config - NEW LINK */}
+                <Link to="/admin" style={linkStyle} onMouseOver={(e) => e.currentTarget.style.backgroundColor = navHoverStyle.backgroundColor} onMouseOut={(e) => e.currentTarget.style.backgroundColor = linkStyle.backgroundColor}>
+                    Admin Config
+                </Link>
+            </nav>
             
-            {/* Link to the Submissions page */}
-            <Link to="/submissions" style={linkStyle}>
-                Submissions
-            </Link>
-            
-            {/* Link to the About page */}
-            <Link to="/about" style={linkStyle}>
-                About
-            </Link>
-            
-            {/* Link to the Admin page */}
-            <Link to="/admin" style={linkStyle}>
-                Admin Config // <-- MAKE SURE THIS LINE IS CLEAN
-            </Link>
-        </nav> 
-        
-        {/* Sign Out Button */}
-        <button 
-            onClick={handleSignOut} 
-            style={signOutButtonStyle}
-        >
-            Sign Out
-        </button>
-    </div>
-);
+            {/* Sign Out Button */}
+            <button 
+                onClick={handleSignOut} 
+                style={signOutButtonStyle}
+            >
+                Sign Out
+            </button>
+        </div>
+    );
 }
 
 export default Sidebar;
