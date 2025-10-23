@@ -60,7 +60,10 @@ function App() {
                         path="/submissions" 
                         element={<ProtectedRoute component={Submissions} user={user} loading={loading} />} 
                     />
-                    
+                    <Route 
+                        path="/admin" 
+                        element={<ProtectedRoute component={Admin} user={user} loading={loading} />} 
+                    />
                     {/* Publicly accessible route within the authenticated layout */}
                     <Route path="/about" element={<About />} />
                     
@@ -72,7 +75,6 @@ function App() {
     ) : (
         // UNAUTHENTICATED LAYOUT: Only the Login page
         <Routes>
-            path="/admin"
             <Route path="*" element={<Login />} />
         </Routes>
     );
