@@ -1,6 +1,7 @@
 // src/pages/Admin.js
 
 import React from 'react';
+import AddAdvisorForm from '../components/AddAdvisorForm'; 
 
 const containerStyle = {
     padding: '20px',
@@ -14,9 +15,11 @@ function Admin() {
             
             {/* Advisor Management Section will go here */}
             <h2 style={{marginTop: '30px'}}>Advisor Management</h2>
+            <AddAdvisorForm /> {/* <-- USE THE NEW COMPONENT HERE */}
+
             <div style={{border: '1px dashed #ccc', padding: '20px', minHeight: '150px'}}>
-                {/* Advisor list and add form components will be placed here */}
-                Advisor management components coming soon...
+                {/* Advisor list will be displayed here soon */}
+                Advisor list coming soon...
             </div>
             
             {/* New Discussion Initiation Section will go here */}
