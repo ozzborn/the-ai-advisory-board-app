@@ -4,33 +4,50 @@ import React, { useState, useEffect } from 'react';
 import AddAdvisorForm from '../components/AddAdvisorForm';
 import AdvisorRow from '../components/AdvisorRow'; 
 import { db } from '../firebase';
-// Ensure addDoc and serverTimestamp are imported
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'; 
 
-const containerStyle = { // <-- THIS LINE WAS LIKELY MISSED OR DELETED
+const containerStyle = {
     padding: '20px',
 };
+
 
 function Admin() {
     const [advisors, setAdvisors] = useState([]);
     const [loadingAdvisors, setLoadingAdvisors] = useState(true);
     const [isStartingDiscussion, setIsStartingDiscussion] = useState(false);
-    // NEW STATE: To hold the user's question
     const [userQuestion, setUserQuestion] = useState(''); 
 
 
-    // ... (The useEffect hook for fetching advisors remains the same)
-    useEffect(() => {
-        // ... (existing onSnapshot logic)
+    // Fetch Advisors in real-time
+    useEffect(() => { 
+        const advisorsQuery = query(
+            collection(db, 'advisors'),
+            orderBy('createdAt', 'asc') // Order by the time they were added
+        );
+
+        const unsubscribe = onSnapshot(advisorsQuery, (snapshot) => {
+            const advisorsList = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            setAdvisors(advisorsList);
+            setLoadingAdvisors(false);
+        }, (error) => {
+            console.error("Error fetching advisors:", error);
+            setLoadingAdvisors(false);
+        });
+
+        return () => unsubscribe();
     }, []);
 
 
-    // UPDATED: Function to create the initial submission and trigger the AI flow
+    // Function to create the initial submission and trigger the AI flow
     const handleStartDiscussion = async () => {
         const activeAdvisors = advisors.filter(a => a.isActive);
 
         if (activeAdvisors.length === 0) {
-            alert('Please activate at least one advisor before starting a discussion.');
+            alert('Please activate at least one advisor before asking the board a question.');
             return;
         }
 
@@ -45,10 +62,10 @@ function Admin() {
             const submissionData = {
                 title: 'New Advisory Request: ' + userQuestion.substring(0, 50) + '...',
                 description: userQuestion, // Store the full question here
-                status: 'Processing', // NEW: Set status to Processing while AI is running
+                status: 'Processing', // Set status to Processing while AI is running
                 advisorAssignment: activeAdvisors.map(a => a.name).join(', '),
                 submittedAt: serverTimestamp(),
-                // NEW FIELD: Array of active advisor IDs for the Cloud Function to use
+                // Array of active advisor IDs for the Cloud Function to use
                 activeAdvisorIDs: activeAdvisors.map(a => a.id), 
                 // Mock fields to match your existing submission data structure
                 attachments: 0,
@@ -59,18 +76,17 @@ function Admin() {
             // 1. Create the submission document in Firestore
             const newDocRef = await addDoc(collection(db, 'submissions'), submissionData);
             
-            // 2. Trigger the Cloud Function (To be built next session)
-            // For now, we will simulate the process
+            // 2. Trigger the Cloud Function (To be built in the next session)
+            // The Cloud Function will be called here, passing newDocRef.id
             console.log("Submission created:", newDocRef.id);
-            // In the next session, we'll replace this alert with a call to the Cloud Function
-            alert(`Discussion started (ID: ${newDocRef.id}). Status is set to 'Processing'.`);
+            alert(`Discussion started (ID: ${newDocRef.id}). Status is set to 'Processing'. The AI is working...`);
             
             // Clear the form fields after success
             setUserQuestion(''); 
 
         } catch (error) {
             console.error("Error starting initial discussion:", error);
-            alert('Failed to start initial discussion.');
+            alert('Failed to start discussion.');
         } finally {
             setIsStartingDiscussion(false);
         }
@@ -86,7 +102,7 @@ function Admin() {
             <h1>Admin Panel & Board Configuration</h1>
             <p>Use this page to manage the list of active advisors and initiate new board discussions.</p>
             
-            {/* Advisor Management Section (Remains the same) */}
+            {/* Advisor Management Section */}
             <h2 style={{marginTop: '30px'}}>Advisor Management</h2>
             <AddAdvisorForm />
             
@@ -103,9 +119,9 @@ function Admin() {
             </div>
             
             {/* New Discussion Initiation Section (UPDATED) */}
-            <h2 style={{marginTop: '30px'}}>Initiate New Discussion</h2>
+            <h2 style={{marginTop: '30px'}}>Ask Advisory Board</h2>
 
-            {/* NEW: Input for the question */}
+            {/* Input for the question */}
             <textarea
                 placeholder="Type the strategic question you want to ask the AI Advisory Board here..."
                 rows="6"
