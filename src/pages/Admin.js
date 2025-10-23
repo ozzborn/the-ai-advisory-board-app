@@ -7,7 +7,9 @@ import { db } from '../firebase';
 // Ensure addDoc and serverTimestamp are imported
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'; 
 
-// ... (containerStyle and other styles remain the same)
+const containerStyle = { // <-- THIS LINE WAS LIKELY MISSED OR DELETED
+    padding: '20px',
+};
 
 function Admin() {
     const [advisors, setAdvisors] = useState([]);
